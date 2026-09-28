@@ -7,6 +7,7 @@ import com.gucarneiro.banco.model.ContaCorrente;
 import com.gucarneiro.banco.model.Gerente;
 import com.gucarneiro.banco.exception.ValorInvalidoException;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Teste {
@@ -18,8 +19,8 @@ public class Teste {
         gerenteAdm.setSenha("admadm");
 
         Cliente cliente1 = new Cliente("12345", "gustavo carneiro", "gu@email.com", "2004-01-14");
-        CartaoDeCredito cartao1 = new CartaoDeCredito("9876543210", 000, "2032-12", 200.0, 0, 0);
-        ContaCorrente contaCorrente = new ContaCorrente(cliente1, 0.0, 4321, 1234, cartao1);
+        CartaoDeCredito cartao1 = new CartaoDeCredito("9876543210", "000", "2032-12", BigDecimal.valueOf(200.0), 0, 0);
+        ContaCorrente contaCorrente = new ContaCorrente(cliente1, BigDecimal.valueOf(0.0), 4321, 1234, cartao1);
 
         int opcao;
         do {
@@ -79,7 +80,7 @@ public class Teste {
                                     break;
                                 case 2:
                                     System.out.print("Informe o valor de deposito: R$");
-                                    double valorDeposito = scan.nextDouble();
+                                    BigDecimal valorDeposito = BigDecimal.valueOf(scan.nextDouble());
 
                                     try {
                                         contaCorrente.depositar(valorDeposito);
@@ -90,7 +91,7 @@ public class Teste {
                                     break;
                                 case 3:
                                     System.out.print("Informe o valor de saque: R$");
-                                    double valorSaque = scan.nextDouble();
+                                    BigDecimal valorSaque = BigDecimal.valueOf(scan.nextDouble());
 
                                     try {
                                         contaCorrente.sacar(valorSaque);
@@ -105,14 +106,14 @@ public class Teste {
                                     break;
                                 case 4:
                                     System.out.print("Informe o valor da compra a ser feita: R$");
-                                    double valorCompra = scan.nextDouble();
+                                    BigDecimal valorCompra = BigDecimal.valueOf(scan.nextDouble());
 
                                     contaCorrente.getCc().realizarCompra(valorCompra);
                                     break;
                                 case 5:
                                     System.out.println("Simulação de 10 compras no credito: \n");
                                     for (int i = 0; i < 10; i++){
-                                        contaCorrente.getCc().realizarCompra(10);
+                                        contaCorrente.getCc().realizarCompra(BigDecimal.valueOf(10));
                                         System.out.println("\n--------------------------\n");
                                     }
                                     break;

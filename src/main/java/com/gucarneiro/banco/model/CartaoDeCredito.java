@@ -2,12 +2,14 @@ package com.gucarneiro.banco.model;
 
 import com.gucarneiro.banco.exception.LimiteExcedidoException;
 
+import java.math.BigDecimal;
+
 public class CartaoDeCredito {
     private String numeroCartao;
-    private int codigoSeguranca;
+    private String codigoSeguranca;
     private String dataVencimento;
-    private double limiteInicial;
-    private double limiteDisponivel;
+    private BigDecimal limiteInicial;
+    private BigDecimal limiteDisponivel;
     private long qntdCompras;
     private int score;
 
@@ -19,11 +21,11 @@ public class CartaoDeCredito {
         this.numeroCartao = numeroCartao;
     }
 
-    public int getCodigoSeguranca() {
+    public String getCodigoSeguranca() {
         return codigoSeguranca;
     }
 
-    public void setCodigoSeguranca(int codigoSeguranca) {
+    public void setCodigoSeguranca(String codigoSeguranca) {
         this.codigoSeguranca = codigoSeguranca;
     }
 
@@ -35,19 +37,19 @@ public class CartaoDeCredito {
         this.dataVencimento = dataVencimento;
     }
 
-    public double getLimiteInicial() {
+    public BigDecimal getLimiteInicial() {
         return limiteInicial;
     }
 
-    public void setLimiteInicial(double limiteInicial) {
+    public void setLimiteInicial(BigDecimal limiteInicial) {
         this.limiteInicial = limiteInicial;
     }
 
-    public double getLimiteDisponivel() {
+    public BigDecimal getLimiteDisponivel() {
         return limiteDisponivel;
     }
 
-    public void setLimiteDisponivel(double limiteDisponivel) {
+    public void setLimiteDisponivel(BigDecimal limiteDisponivel) {
         this.limiteDisponivel = limiteDisponivel;
     }
 
@@ -67,7 +69,7 @@ public class CartaoDeCredito {
         this.score = score;
     }
 
-    public CartaoDeCredito(String numeroCartao, int codigoSeguranca, String dataVencimento, double limiteInicial, long qntdCompras, int score) {
+    public CartaoDeCredito(String numeroCartao, String codigoSeguranca, String dataVencimento, BigDecimal limiteInicial, long qntdCompras, int score) {
         this.numeroCartao = numeroCartao;
         this.codigoSeguranca = codigoSeguranca;
         this.dataVencimento = dataVencimento;
@@ -80,32 +82,32 @@ public class CartaoDeCredito {
     public CartaoDeCredito() {
     }
 
-    public void realizarCompra(double valorCompra) {
-        if (valorCompra > this.limiteDisponivel) {
+    public void realizarCompra(BigDecimal valorCompra) {
+        if (valorCompra.compareTo(this.limiteDisponivel) > 0) {
             throw new LimiteExcedidoException("Valor da compra maior que o limite disponivel!");
         }
         if (qntdCompras == 0) {
-            setLimiteDisponivel(getLimiteInicial() - valorCompra);
+            this.limiteDisponivel = this.limiteInicial.subtract(valorCompra);
             qntdCompras++;
-            setScore(getScore() + 10);
+            this.score+=10;
 
             System.out.println("Limite após compra no credito: R$ " + getLimiteDisponivel());
             System.out.println("Score atual: " + getScore() + "pts");
         } else {
-            setLimiteDisponivel(getLimiteDisponivel() - valorCompra);
+            this.limiteDisponivel = this.limiteDisponivel.subtract(valorCompra);
             qntdCompras++;
-            setScore(getScore() + 10);
+            this.score+=10;
 
-            System.out.println("Limite após compra no credito: R$ " + getLimiteDisponivel());
-            System.out.println("Score atual: " + getScore() + "pts");
+            System.out.println("Limite após compra no credito: R$ " + this.limiteDisponivel);
+            System.out.println("Score atual: " + this.score + "pts");
         }
         verificarScore(getScore());
     }
 
     public void verificarScore(int score) {
         if (score == 100) {
-            setLimiteInicial(getLimiteInicial() + 150);
-            setLimiteDisponivel(getLimiteDisponivel() + 150);
+            this.limiteInicial.add(BigDecimal.valueOf(150));
+            this.limiteDisponivel.add(BigDecimal.valueOf(150));
             System.out.println("Parabéns!! Seu limite aumento para: R$ " + getLimiteInicial());
             System.out.println("Seu limite atual é de: R$ " + getLimiteDisponivel());
         }

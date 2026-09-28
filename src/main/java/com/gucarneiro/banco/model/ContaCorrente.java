@@ -1,5 +1,7 @@
 package com.gucarneiro.banco.model;
 
+import java.math.BigDecimal;
+
 public class ContaCorrente extends Conta{
     CartaoDeCredito cc = new CartaoDeCredito();
 
@@ -13,7 +15,7 @@ public class ContaCorrente extends Conta{
 
 
 
-    public ContaCorrente(Cliente cliente, double saldo, int numeroConta, int senha, CartaoDeCredito cc) {
+    public ContaCorrente(Cliente cliente, BigDecimal saldo, int numeroConta, int senha, CartaoDeCredito cc) {
         super(cliente, saldo, numeroConta, senha);
         this.cc = cc;
     }

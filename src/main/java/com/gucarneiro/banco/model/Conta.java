@@ -3,10 +3,12 @@ package com.gucarneiro.banco.model;
 import com.gucarneiro.banco.exception.SaldoInsuficienteException;
 import com.gucarneiro.banco.exception.ValorInvalidoException;
 
+import java.math.BigDecimal;
+
 public abstract class Conta {
     Cliente cliente = new Cliente();
 
-    private double saldo;
+    private BigDecimal saldo;
     private int numeroConta;
     private int senha;
 
@@ -18,11 +20,11 @@ public abstract class Conta {
         this.cliente = cliente;
     }
 
-    public double getSaldo() {
+    public BigDecimal getSaldo() {
         return saldo;
     }
 
-    private void setSaldo(double saldo) {
+    public void setSaldo(BigDecimal saldo) {
         this.saldo = saldo;
     }
 
@@ -42,7 +44,7 @@ public abstract class Conta {
         this.senha = senha;
     }
 
-    public Conta(Cliente cliente, double saldo, int numeroConta, int senha) {
+    public Conta(Cliente cliente, BigDecimal saldo, int numeroConta, int senha) {
         setCliente(cliente);
         setSaldo(saldo);
         setNumeroConta(numeroConta);
@@ -56,23 +58,23 @@ public abstract class Conta {
         System.out.println("Saldo da conta: R$ " + this.saldo);
     }
 
-    public void depositar(double valorDeposito) {
-        if (valorDeposito <= 0) {
+    public void depositar(BigDecimal valorDeposito) {
+        if (valorDeposito.compareTo(BigDecimal.ZERO) <= 0) {
             throw new ValorInvalidoException("O valor de deposito deve ser maior que 0!");
         }
 
-        this.saldo += valorDeposito;
+        saldo = saldo.add(valorDeposito);
         System.out.println("Saldo após deposito: R$ " + this.saldo);
     }
 
-    public void sacar(double valorSaque) {
-        if (valorSaque <= 0) {
+    public void sacar(BigDecimal valorSaque) {
+        if (valorSaque.compareTo(BigDecimal.ZERO) <= 0) {
             throw new ValorInvalidoException("O valor de saque deve ser maior que 0!");
         }
-        else if (valorSaque > this.saldo) {
+        else if (valorSaque.compareTo(this.saldo) > 0) {
             throw new SaldoInsuficienteException("O valor de saque é maior que o saldo da conta! Saldo insuficiente!");
         }
-        saldo -= valorSaque;
+        saldo = saldo.add(valorSaque);
         System.out.println("Saldo após saque: R$ " + getSaldo());
     }
 
