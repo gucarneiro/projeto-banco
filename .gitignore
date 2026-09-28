@@ -28,3 +28,11 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Configurações do IntelliJ IDEA ###
+.idea/
+*.iml
+
+###  futuramente para Maven ou Gradle
+target/
+build/

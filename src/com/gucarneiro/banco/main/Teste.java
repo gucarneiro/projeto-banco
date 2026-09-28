@@ -10,7 +10,7 @@ import com.gucarneiro.banco.exception.ValorInvalidoException;
 import java.util.Scanner;
 
 public class Teste {
-    static void main() {
+    public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
         Gerente gerenteAdm = new Gerente();
