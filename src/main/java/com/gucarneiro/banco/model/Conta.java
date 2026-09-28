@@ -1,6 +1,7 @@
 package com.gucarneiro.banco.model;
 
 import com.gucarneiro.banco.exception.SaldoInsuficienteException;
+import com.gucarneiro.banco.exception.SenhaIncorretaException;
 import com.gucarneiro.banco.exception.ValorInvalidoException;
 
 import java.math.BigDecimal;
@@ -54,28 +55,25 @@ public abstract class Conta {
     public Conta() {
     }
 
-    public void acessarSaldo() {
-        System.out.println("Saldo da conta: R$ " + this.saldo);
-    }
-
     public void depositar(BigDecimal valorDeposito) {
         if (valorDeposito.compareTo(BigDecimal.ZERO) <= 0) {
             throw new ValorInvalidoException("O valor de deposito deve ser maior que 0!");
         }
 
         saldo = saldo.add(valorDeposito);
-        System.out.println("Saldo após deposito: R$ " + this.saldo);
     }
 
-    public void sacar(BigDecimal valorSaque) {
+    public void sacar(BigDecimal valorSaque, int senha) {
         if (valorSaque.compareTo(BigDecimal.ZERO) <= 0) {
             throw new ValorInvalidoException("O valor de saque deve ser maior que 0!");
         }
         else if (valorSaque.compareTo(this.saldo) > 0) {
             throw new SaldoInsuficienteException("O valor de saque é maior que o saldo da conta! Saldo insuficiente!");
         }
-        saldo = saldo.add(valorSaque);
-        System.out.println("Saldo após saque: R$ " + getSaldo());
+        if (senha != this.senha){
+            throw new SenhaIncorretaException("Senha incorreta!");
+        }
+        saldo = saldo.subtract(valorSaque);
     }
 
     public void pagarBoleto() {

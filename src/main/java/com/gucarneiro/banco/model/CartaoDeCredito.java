@@ -90,26 +90,18 @@ public class CartaoDeCredito {
             this.limiteDisponivel = this.limiteInicial.subtract(valorCompra);
             qntdCompras++;
             this.score+=10;
-
-            System.out.println("Limite após compra no credito: R$ " + getLimiteDisponivel());
-            System.out.println("Score atual: " + getScore() + "pts");
         } else {
             this.limiteDisponivel = this.limiteDisponivel.subtract(valorCompra);
             qntdCompras++;
             this.score+=10;
-
-            System.out.println("Limite após compra no credito: R$ " + this.limiteDisponivel);
-            System.out.println("Score atual: " + this.score + "pts");
         }
         verificarScore(getScore());
     }
 
     public void verificarScore(int score) {
         if (score == 100) {
-            this.limiteInicial.add(BigDecimal.valueOf(150));
-            this.limiteDisponivel.add(BigDecimal.valueOf(150));
-            System.out.println("Parabéns!! Seu limite aumento para: R$ " + getLimiteInicial());
-            System.out.println("Seu limite atual é de: R$ " + getLimiteDisponivel());
+            this.limiteInicial = this.limiteInicial.add(BigDecimal.valueOf(150));
+            this.limiteDisponivel = this.limiteDisponivel.add(BigDecimal.valueOf(150));
         }
     }
 }

@@ -30,10 +30,4 @@ public class ContaCorrente extends Conta{
     public void pagarFatura(){
         //todo
     }
-
-    @Override
-    public void acessarSaldo(){
-        System.out.println("Saldo da conta: R$ "+getSaldo());
-        System.out.println("Limite da conta: R$ "+ cc.getLimiteDisponivel());
-    }
 }

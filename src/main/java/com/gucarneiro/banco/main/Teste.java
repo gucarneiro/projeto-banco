@@ -76,7 +76,8 @@ public class Teste {
 
                             switch (opcaoGerente){
                                 case 1:
-                                    contaCorrente.acessarSaldo();
+                                    System.out.println("Saldo da conta: R$ "+contaCorrente.getSaldo());
+                                    System.out.println("Limite disponivel: R$ "+contaCorrente.getCc().getLimiteDisponivel());
                                     break;
                                 case 2:
                                     System.out.print("Informe o valor de deposito: R$");
@@ -92,9 +93,11 @@ public class Teste {
                                 case 3:
                                     System.out.print("Informe o valor de saque: R$");
                                     BigDecimal valorSaque = BigDecimal.valueOf(scan.nextDouble());
+                                    System.out.print("Informe sua senha: ");
+                                    int senhaValidar = scan.nextInt();
 
                                     try {
-                                        contaCorrente.sacar(valorSaque);
+                                        contaCorrente.sacar(valorSaque, senhaValidar);
                                     }
                                     catch (SaldoInsuficienteException e){
                                         System.out.println("Aviso de saldo: " + e.getMessage());
@@ -109,12 +112,23 @@ public class Teste {
                                     BigDecimal valorCompra = BigDecimal.valueOf(scan.nextDouble());
 
                                     contaCorrente.getCc().realizarCompra(valorCompra);
+
+                                    if (contaCorrente.getCc().getScore() == 100){
+                                        System.out.println("Parabens! Seu limite aumentou! Limite total: R$ "+contaCorrente.getCc().getLimiteInicial());
+                                        System.out.println("Limite disponivel: R$ "+contaCorrente.getCc().getLimiteDisponivel());
+                                    }
                                     break;
                                 case 5:
                                     System.out.println("Simulação de 10 compras no credito: \n");
                                     for (int i = 0; i < 10; i++){
                                         contaCorrente.getCc().realizarCompra(BigDecimal.valueOf(10));
+                                        System.out.println("Compra realizada com sucesso! \nValor da compra: R$ "+10.0+" | Limite disponivel: R$ "+contaCorrente.getCc().getLimiteDisponivel());
                                         System.out.println("\n--------------------------\n");
+
+                                        if (contaCorrente.getCc().getScore() == 100){
+                                            System.out.println("Parabens! Seu limite aumentou! Limite total: R$ "+contaCorrente.getCc().getLimiteInicial());
+                                            System.out.println("Limite disponivel: R$ "+contaCorrente.getCc().getLimiteDisponivel());
+                                        }
                                     }
                                     break;
                                 default:
