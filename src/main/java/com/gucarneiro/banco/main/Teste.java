@@ -21,13 +21,6 @@ public class Teste {
         CartaoDeCredito cartao1 = new CartaoDeCredito("9876543210", 000, "2032-12", 200.0, 0, 0);
         ContaCorrente contaCorrente = new ContaCorrente(cliente1, 0.0, 4321, 1234, cartao1);
 
-
-        try {
-            contaCorrente.depositar(-50.0); // Vai lançar a exceção!
-        } catch (ValorInvalidoException e) {
-            System.out.println("Erro capturado: " + e.getMessage());
-        }
-
         int opcao;
         do {
             System.out.print("1 - Login Gerente | 2 - Login Cliente | 0 - Sair\nOpcao: ");
