@@ -1,10 +1,7 @@
 package com.gucarneiro.banco.main;
 
 import com.gucarneiro.banco.exception.SaldoInsuficienteException;
-import com.gucarneiro.banco.model.CartaoDeCredito;
-import com.gucarneiro.banco.model.Cliente;
-import com.gucarneiro.banco.model.ContaCorrente;
-import com.gucarneiro.banco.model.Gerente;
+import com.gucarneiro.banco.model.*;
 import com.gucarneiro.banco.exception.ValorInvalidoException;
 
 import java.math.BigDecimal;
@@ -71,7 +68,7 @@ public class Teste {
                     else {
                         int opcaoGerente;
                         do {
-                            System.out.println("1 - Acessar Saldo | 2 - Depositar | 3 - Sacar | 4 - Comprar no Credito | 5 - 10 compras | 0 - Sair");
+                            System.out.println("1 - Acessar Saldo | 2 - Depositar | 3 - Sacar | 4 - Comprar no Credito | 5 - 10 compras | 6 - Verificar Extrato | 0 - Sair");
                             opcaoGerente = scan.nextInt();
 
                             switch (opcaoGerente){
@@ -111,7 +108,7 @@ public class Teste {
                                     System.out.print("Informe o valor da compra a ser feita: R$");
                                     BigDecimal valorCompra = BigDecimal.valueOf(scan.nextDouble());
 
-                                    contaCorrente.getCc().realizarCompra(valorCompra);
+                                    contaCorrente.realizarCompraCredito(valorCompra);
 
                                     if (contaCorrente.getCc().getScore() == 100){
                                         System.out.println("Parabens! Seu limite aumentou! Limite total: R$ "+contaCorrente.getCc().getLimiteInicial());
@@ -121,7 +118,7 @@ public class Teste {
                                 case 5:
                                     System.out.println("Simulação de 10 compras no credito: \n");
                                     for (int i = 0; i < 10; i++){
-                                        contaCorrente.getCc().realizarCompra(BigDecimal.valueOf(10));
+                                        contaCorrente.realizarCompraCredito(BigDecimal.valueOf(10));
                                         System.out.println("Compra realizada com sucesso! \nValor da compra: R$ "+10.0+" | Limite disponivel: R$ "+contaCorrente.getCc().getLimiteDisponivel());
                                         System.out.println("\n--------------------------\n");
 
@@ -129,6 +126,11 @@ public class Teste {
                                             System.out.println("Parabens! Seu limite aumentou! Limite total: R$ "+contaCorrente.getCc().getLimiteInicial());
                                             System.out.println("Limite disponivel: R$ "+contaCorrente.getCc().getLimiteDisponivel());
                                         }
+                                    }
+                                    break;
+                                case 6:
+                                    for (Transacao t : contaCorrente.getHistorico()){
+                                        System.out.println(t.getDataHora() + " | " + t.getTipo() + " | R$ " + t.getValor());
                                     }
                                     break;
                                 default:

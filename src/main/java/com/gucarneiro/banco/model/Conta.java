@@ -5,9 +5,14 @@ import com.gucarneiro.banco.exception.SenhaIncorretaException;
 import com.gucarneiro.banco.exception.ValorInvalidoException;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Conta {
     Cliente cliente = new Cliente();
+    List<Transacao> historico = new ArrayList<>();
+
+    private CartaoDeCredito cc;
 
     private BigDecimal saldo;
     private int numeroConta;
@@ -61,6 +66,7 @@ public abstract class Conta {
         }
 
         saldo = saldo.add(valorDeposito);
+        registrarTransacao(valorDeposito, TipoTransacao.DEPOSITO);
     }
 
     public void sacar(BigDecimal valorSaque, int senha) {
@@ -74,9 +80,33 @@ public abstract class Conta {
             throw new SenhaIncorretaException("Senha incorreta!");
         }
         saldo = saldo.subtract(valorSaque);
+        registrarTransacao(valorSaque, TipoTransacao.SAQUE);
     }
 
-    public void pagarBoleto() {
-        //todo
+    public void receberPix(BigDecimal valorRecebido) {
+        saldo = saldo.add(valorRecebido);
+        registrarTransacao(valorRecebido, TipoTransacao.PIX_RECEBIDO);
+    }
+
+    public void enviarPix(BigDecimal valorEnviado, int senha){
+        if (valorEnviado.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ValorInvalidoException("O valor do PIX a ser enviado deve ser maior que 0!");
+        }
+        else if (valorEnviado.compareTo(this.saldo) > 0) {
+            throw new SaldoInsuficienteException("O valor do PIX a ser enviado é maior que o saldo da conta! Saldo insuficiente!");
+        }
+        if (senha != this.senha){
+            throw new SenhaIncorretaException("Senha incorreta!");
+        }
+        saldo = saldo.subtract(valorEnviado);
+        registrarTransacao(valorEnviado, TipoTransacao.PIX_ENVIADO);
+    }
+
+    public List<Transacao> getHistorico() {
+        return historico;
+    }
+
+    public void registrarTransacao(BigDecimal valor, TipoTransacao tipo){
+        historico.add(new Transacao(valor, tipo));
     }
 }

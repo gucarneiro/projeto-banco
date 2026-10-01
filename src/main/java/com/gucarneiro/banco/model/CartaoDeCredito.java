@@ -82,7 +82,7 @@ public class CartaoDeCredito {
     public CartaoDeCredito() {
     }
 
-    public void realizarCompra(BigDecimal valorCompra) {
+    public void comprar(BigDecimal valorCompra) {
         if (valorCompra.compareTo(this.limiteDisponivel) > 0) {
             throw new LimiteExcedidoException("Valor da compra maior que o limite disponivel!");
         }

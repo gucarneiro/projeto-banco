@@ -13,14 +13,21 @@ public class ContaCorrente extends Conta{
         this.cc = cc;
     }
 
-
-
     public ContaCorrente(Cliente cliente, BigDecimal saldo, int numeroConta, int senha, CartaoDeCredito cc) {
         super(cliente, saldo, numeroConta, senha);
         this.cc = cc;
     }
 
     public ContaCorrente() {
+    }
+
+    public void realizarCompraCredito(BigDecimal valorCompra){
+        if (this.cc == null){
+            throw new IllegalStateException("Essa conta não possui cartão de credito!");
+        }
+
+        this.cc.comprar(valorCompra);
+        registrarTransacao(valorCompra, TipoTransacao.COMPRA_CREDITO);
     }
 
     public void acessarFatura(){
